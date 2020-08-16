@@ -1,0 +1,106 @@
+intersection type
+  - two types into one
+
+
+when it comes to
+interface <<<<< type
+
+type guard
+  when you use union types, it's gonna be useful.
+
+EX)
+  type Owner{
+    name:string,
+    privileges:string[],
+  }
+  type Employee{
+    name:string,
+    hiredDate:Date,
+  }
+
+  type UpperEmployee = Owner | Employee;
+
+  if you wanna add function if there's hiredDate, use 'in'
+
+  function printInfo(person:UpperEmployee){
+    if('hiredDate' in person){
+      console.log(person.name+' is hired on '+person.hiredDate)
+    }
+    if('privileges' in person){
+      console.log(person.name + 'has the right. For example'+person.privileges)
+    }
+  }
+
+  if person is UpperEmployee, two logs would be built.
+  By introducing this practice, you can let objects do like you want them to do.
+
+  when you wanna try type guard in class objects, use 'instanceof'.
+
+Discriminated unions
+
+  interfaceに共通の枠を用意して、その値似合わせてswitch文をする。
+
+  EX)
+    type Bird {
+      kind:'bird',
+      flyingSpeed:number,
+    }
+    type Horse {
+      kind:'horse',
+      runningSpeed:number,
+    }
+    type Animal = Bird | Horse;
+
+    function moveAnimal(animal:Animal){
+      let speed:number;
+      switch(animal.kind){
+        case 'bird':
+          speed = animal.flyingSpeed
+          break
+        case 'horse':
+          speed = animal.runningSpeed;
+          break
+      }
+      console.log('moving speed is' + speed);
+    }
+
+type casting
+  When it is unclear which type is.
+
+ to make it clear,
+  const userInputElement = <HTMLInputElement>document.getElementByID('user-input')!;
+  when you use react, it will occur conflict!
+
+  another solution is...
+  const userInputElement = document.getElementByID('user-input') as HTMLInputElement;
+
+index type
+  interface ErrorContainer{
+    [prop:string]:string;
+  }
+
+  const errorBag:ErrorContainer = {
+    email:'Invalid e-mail!',
+    name:'you cannot include special characters in your name!',
+  }
+  console.log(errorBag.email)
+
+
+function overload/
+ this is similar to the function of extends.
+ EX)
+  function add(a:Combinable,b:Combinable){
+    ...
+  }
+  if TS can understand which values would be returned, however, it can't be so far.
+  If we see this code, it is plain to see that if both a and b are number, result must be number not Combinable and vice versa.
+
+  This is the practice.
+  function add(a:number, b:number):number;
+  function add(a:Combinable,b:Combinable){
+    ...
+  }
+
+  optional parameter => function add(a:number, b?:number){
+    ...
+  }
